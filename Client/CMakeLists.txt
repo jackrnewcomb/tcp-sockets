@@ -35,4 +35,4 @@ include_directories(${PROJECT_SOURCE_DIR}/../SFML/include)
 link_directories(${PROJECT_SOURCE_DIR}/../SFML/lib)
 
 # Link the executable to the libraries in the lib directory
-target_link_libraries(client PUBLIC sfml-graphics)
+target_link_libraries(client PUBLIC sfml-network)

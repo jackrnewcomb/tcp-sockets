@@ -1,4 +1,5 @@
 
+#include "Server.hpp"
 #include <iostream>
 #include <string>
 
@@ -33,13 +34,17 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    std::string port = argv[2];
+    std::string userPort = argv[1];
 
-    bool clean = sanitizeInput(port);
+    bool clean = sanitizeInput(userPort);
     if (!clean)
     {
         return -1;
     }
+
+    int port = std::stoi(userPort);
+    Server server(port);
+    server.listen();
 
     return 0;
 }

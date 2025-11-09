@@ -35,21 +35,22 @@ int main(int argc, char *argv[])
     }
 
     std::string ipAddress = argv[1];
-    std::string port = argv[2];
+    std::string userPort = argv[2];
 
-    bool clean = sanitizeInput({ipAddress, port});
+    bool clean = sanitizeInput({ipAddress, userPort});
     if (!clean)
     {
         return -1;
     }
 
-    Client client;
+    int port = std::stoi(userPort);
+    Client client(port);
 
     std::string msg;
     while (true)
     {
 
-        client.update();
+        client.promptMessage();
     }
     return 0;
 }
