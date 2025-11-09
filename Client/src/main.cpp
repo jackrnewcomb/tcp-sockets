@@ -1,3 +1,4 @@
+#include "Client.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -42,5 +43,13 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    Client client;
+
+    std::string msg;
+    while (true)
+    {
+
+        client.update();
+    }
     return 0;
 }
