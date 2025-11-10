@@ -29,6 +29,7 @@ endif()
 add_subdirectory(SFML)
 add_subdirectory(Client)
 add_subdirectory(Server)
+add_subdirectory(Common)
 
 # Include header files
 include_directories(${PROJECT_SOURCE_DIR}/include)

@@ -63,10 +63,15 @@ void Server::listen()
                 {
                     if (selector.isReady(*client))
                     {
-                        sf::Packet packet;
-                        if (client->receive(packet) == sf::Socket::Status::Done)
+                        PacketData receivedData;
+                        std::size_t received;
+                        sf::Socket::Status receiveStatus =
+                            client->receive(&receivedData, sizeof(receivedData), received);
+
+                        if (receiveStatus == sf::Socket::Status::Done)
                         {
-                            // uhh
+                            std::cout << "Yeaa we got a message: \n";
+                            receivedData.print();
                         }
                     }
                 }
