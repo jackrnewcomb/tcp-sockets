@@ -13,8 +13,6 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(client PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-# Link to the common target
-target_link_libraries(client PUBLIC common)
 
 # Include SFML
 target_include_directories(client PUBLIC
