@@ -44,13 +44,11 @@ void Server::listen()
                 {
                     std::string msg = "Client connected from: " + client->getRemoteAddress().toString() + ":" +
                                       std::to_string(client->getRemotePort()) + "\n";
-                    std::cout << msg;
                     writeToLog(msg);
 
                     selector.add(*client);
                     clients.push_back(std::move(client));
                 }
-
                 else
                 {
                     std::cout << "Something happened\n";
@@ -58,23 +56,40 @@ void Server::listen()
             }
             else
             {
-                // The listener socket is not ready, test all other sockets (the clients)
-                for (auto &client : clients)
+                for (auto it = clients.begin(); it != clients.end();)
                 {
-                    if (selector.isReady(*client))
+                    sf::TcpSocket &client = **it;
+
+                    if (selector.isReady(client))
                     {
                         PacketData receivedData;
-                        std::size_t received;
-                        sf::Socket::Status receiveStatus =
-                            client->receive(&receivedData, sizeof(receivedData), received);
+                        std::size_t received = 0;
+                        sf::Socket::Status status = client.receive(&receivedData, sizeof(receivedData), received);
 
-                        if (receiveStatus == sf::Socket::Status::Done)
+                        if (status == sf::Socket::Done)
                         {
-                            std::cout << "Yeaa we got a message \n";
                             std::string newMsg = receivedData.toString();
-                            writeToLog("New message received from address " + client->getRemoteAddress().toString() +
-                                       ": " + newMsg);
+                            writeToLog("New message received from from: " + client.getRemoteAddress().toString() + ":" +
+                                       std::to_string(client.getRemotePort()) + ": " + newMsg);
+                            ++it;
                         }
+                        else if (status == sf::Socket::Disconnected)
+                        {
+                            std::string msg = "Client disconnected from: " + client.getRemoteAddress().toString() +
+                                              ":" + std::to_string(client.getRemotePort()) + "\n";
+                            writeToLog(msg);
+
+                            selector.remove(client);
+                            it = clients.erase(it);
+                        }
+                        else
+                        {
+                            ++it; // Not ready or partial, move on
+                        }
+                    }
+                    else
+                    {
+                        ++it;
                     }
                 }
             }
