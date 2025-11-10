@@ -45,29 +45,9 @@ void Client::sendMessage(const std::string &message)
 
     // Create and populate the custom data structure
     PacketData data;
-    data.sequenceNumber = sequenceNum_++;
-
-    // Simulate some moving object (circular motion)
-    float t = sequenceNum_ * 0.1f;
-    data.position[0] = 10.0f * std::cos(t);
-    data.position[1] = 10.0f * std::sin(t);
-    data.position[2] = t * 0.5f;
-
-    data.velocity[0] = -10.0f * std::sin(t) * 0.1f;
-    data.velocity[1] = 10.0f * std::cos(t) * 0.1f;
-    data.velocity[2] = 0.5f;
-
-    data.status = (sequenceNum_ % 2 == 0) ? 1 : 0;
 
     const char *constCharPointer = message.c_str();
-    char msg[64];
-    snprintf(msg, sizeof(msg), "Client packet #%u", sequenceNum_);
     data.setMessage(constCharPointer);
-
-    // Get timestamp
-    auto now = std::chrono::system_clock::now();
-    auto duration = now.time_since_epoch();
-    data.timestamp = std::chrono::duration<double>(duration).count();
 
     // Send the data structure
     sf::Socket::Status sendStatus = socket_->send(&data, sizeof(data));

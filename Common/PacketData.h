@@ -8,21 +8,11 @@
 // Custom structure for transferring data over UDP
 struct PacketData
 {
-    uint32_t sequenceNumber;
-    float position[3]; // x, y, z coordinates
-    float velocity[3]; // vx, vy, vz
-    uint8_t status;    // Status flag
-    char message[64];  // Text message
-    double timestamp;  // Timestamp
+    char message[64]; // Text message
 
     // Constructor
-    PacketData() : sequenceNumber(0), status(0), timestamp(0.0)
+    PacketData()
     {
-        for (int i = 0; i < 3; i++)
-        {
-            position[i] = 0.0f;
-            velocity[i] = 0.0f;
-        }
         memset(message, 0, sizeof(message));
     }
 
@@ -36,12 +26,13 @@ struct PacketData
     // Helper method to print data
     void print() const
     {
-        printf("Sequence: %u\n", sequenceNumber);
-        printf("Position: [%.2f, %.2f, %.2f]\n", position[0], position[1], position[2]);
-        printf("Velocity: [%.2f, %.2f, %.2f]\n", velocity[0], velocity[1], velocity[2]);
-        printf("Status: %u\n", status);
         printf("Message: %s\n", message);
-        printf("Timestamp: %.3f\n", timestamp);
+    }
+
+    // Helper method to return string data
+    char *toString()
+    {
+        return message;
     }
 };
 

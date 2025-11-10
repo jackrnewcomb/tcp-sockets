@@ -70,8 +70,10 @@ void Server::listen()
 
                         if (receiveStatus == sf::Socket::Status::Done)
                         {
-                            std::cout << "Yeaa we got a message: \n";
-                            receivedData.print();
+                            std::cout << "Yeaa we got a message \n";
+                            std::string newMsg = receivedData.toString();
+                            writeToLog("New message received from address " + client->getRemoteAddress().toString() +
+                                       ": " + newMsg);
                         }
                     }
                 }

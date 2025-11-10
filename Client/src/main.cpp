@@ -46,11 +46,19 @@ int main(int argc, char *argv[])
     int port = std::stoi(userPort);
     Client client(port);
 
-    std::string msg;
-    while (true)
+    bool running = true;
+    while (running)
     {
-
         client.promptMessage();
+        std::cout << "Input q to quit/disconnect, or any other button to continue\n";
+
+        std::string in;
+        std::getline(std::cin, in);
+
+        if (in == "q")
+        {
+            running = false;
+        }
     }
     return 0;
 }
