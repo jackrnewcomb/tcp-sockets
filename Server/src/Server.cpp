@@ -42,7 +42,7 @@ void Server::listen()
                 auto client = std::make_unique<sf::TcpSocket>();
                 if (listener_->accept(*client) == sf::Socket::Status::Done)
                 {
-                    std::string msg = "Client connected from: " + client->getRemoteAddress().toString() + ":" +
+                    std::string msg = "Client connected from " + client->getRemoteAddress().toString() + ":" +
                                       std::to_string(client->getRemotePort()) + "\n";
                     writeToLog(msg);
 
@@ -62,21 +62,22 @@ void Server::listen()
 
                     if (selector.isReady(client))
                     {
-                        PacketData receivedData;
-                        std::size_t received = 0;
-                        sf::Socket::Status status = client.receive(&receivedData, sizeof(receivedData), received);
+
+                        sf::Packet receivedData;
+                        sf::Socket::Status status = client.receive(receivedData);
 
                         if (status == sf::Socket::Done)
                         {
-                            std::string newMsg = receivedData.toString();
-                            writeToLog("New message received from from: " + client.getRemoteAddress().toString() + ":" +
+                            std::string newMsg;
+                            receivedData >> newMsg;
+                            writeToLog("New message received from from " + client.getRemoteAddress().toString() + ":" +
                                        std::to_string(client.getRemotePort()) + ": " + newMsg);
                             ++it;
                         }
                         else if (status == sf::Socket::Disconnected)
                         {
-                            std::string msg = "Client disconnected from: " + client.getRemoteAddress().toString() +
-                                              ":" + std::to_string(client.getRemotePort()) + "\n";
+                            std::string msg = "Client disconnected from " + client.getRemoteAddress().toString() + ":" +
+                                              std::to_string(client.getRemotePort()) + "\n";
                             writeToLog(msg);
 
                             selector.remove(client);

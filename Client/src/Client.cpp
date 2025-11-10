@@ -44,13 +44,12 @@ void Client::sendMessage(const std::string &message)
 {
 
     // Create and populate the custom data structure
-    PacketData data;
 
-    const char *constCharPointer = message.c_str();
-    data.setMessage(constCharPointer);
+    sf::Packet packet;
+    packet << message;
 
     // Send the data structure
-    sf::Socket::Status sendStatus = socket_->send(&data, sizeof(data));
+    sf::Socket::Status sendStatus = socket_->send(packet);
 
     if (sendStatus != sf::Socket::Status::Done)
     {
@@ -58,14 +57,5 @@ void Client::sendMessage(const std::string &message)
         {
             std::cout << "Server disconnected" << std::endl;
         }
-        else if (sendStatus == sf::Socket::Status::Error)
-        {
-            std::cout << "Error sending packet " << sequenceNum_ << std::endl;
-        }
-    }
-    else
-    {
-        packetsSent++;
-        std::cout << "Sent packet #" << sequenceNum_ << std::endl;
     }
 }
