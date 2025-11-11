@@ -1,12 +1,28 @@
+/*
+Author: Jack Newcomb
+Class: ECE6122
+Last Date Modified: 11/10/2025
+Description:
+main execution for the client.exe, handles user input sanitization, constructs the Client, and enables message prompts
+*/
+
 #include "Client.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
 
+/**
+ * @brief A user-input sanitization function
+ *
+ * @param A vector of user-inputted arg strings
+ */
 bool sanitizeInput(const std::vector<std::string> &userInput)
 {
+    // Define an invalid input str, if its needed later
     std::string invalidMsg = "Invalid command line argument detected : " + userInput[1] +
                              "\nPlease check your values and press any key to end the program!";
+
+    // Try casting the port input to an int. If it fails, the user inputted an invalid string
     int port;
     try
     {
@@ -14,20 +30,29 @@ bool sanitizeInput(const std::vector<std::string> &userInput)
     }
     catch (...)
     {
+        // Print the invalid message str
         std::cout << invalidMsg;
         return false;
     }
 
+    // If port is not within the valid port range. Also implicitly handles error catching for negative ports
     if (port < 61000 || port > 65535)
     {
+        // Print the invalid message str
         std::cout << invalidMsg;
         return false;
     }
     return true;
 }
 
+/**
+ * @brief main execution, handles initial input, construction of the Client, and the message prompting loop
+ *
+ * @param user-inputted console args
+ */
 int main(int argc, char *argv[])
 {
+    // Check that the right number of args were passed
     if (argc != 3)
     {
         std::cout << "Invalid number of args passed: Expected 2. Aborting\n";
@@ -37,28 +62,21 @@ int main(int argc, char *argv[])
     std::string ipAddress = argv[1];
     std::string userPort = argv[2];
 
+    // Sanitize input
     bool clean = sanitizeInput({ipAddress, userPort});
     if (!clean)
     {
         return -1;
     }
 
+    // Construct the client
     int port = std::stoi(userPort);
-    Client client(port);
+    Client client(port, ipAddress);
 
-    bool running = true;
-    while (running)
+    // Infinite loop to prompt user input
+    while (true)
     {
         client.promptMessage();
-        std::cout << "Input q to quit/disconnect, or any other button to continue\n";
-
-        std::string in;
-        std::getline(std::cin, in);
-
-        if (in == "q")
-        {
-            running = false;
-        }
     }
     return 0;
 }

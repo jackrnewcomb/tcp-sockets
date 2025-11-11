@@ -1,39 +1,41 @@
+/*
+Author: Jack Newcomb
+Class: ECE6122
+Last Date Modified: 11/10/2025
+Description:
+Implementation for a Client class, with methods for prompting user input messages, and sending those messages
+*/
 
 #include "Client.hpp"
 
-Client::Client(const int port)
+Client::Client(const int port, const std::string &address)
 {
+    // Initialize member port_
     port_ = port;
 
     // Connect to server
-    sf::IpAddress serverAddress(127, 0, 0, 1); // Localhost
-
-    std::cout << "TCP Client starting..." << std::endl;
-    std::cout << "Connecting to: " << serverAddress << ":" << port_ << std::endl;
+    sf::IpAddress serverAddress(address);
 
     sf::Socket::Status status = socket_->connect(serverAddress, port_, sf::seconds(5));
 
-    if (status != sf::Socket::Status::Done)
+    // Add some console output handling for possible status situations
+    if (status == sf::Socket::Status::Done)
     {
-        std::cerr << "Error: Could not connect to server" << std::endl;
-        if (status == sf::Socket::Status::Error)
-        {
-            std::cerr << "Socket error occurred" << std::endl;
-        }
-        else if (status == sf::Socket::Status::Disconnected)
-        {
-            std::cerr << "Connection was disconnected" << std::endl;
-        }
-        // abort
+        std::cout << "Connected! Local port: " << socket_->getLocalPort() << "\n";
     }
-
-    std::cout << "Connected to server!" << std::endl;
-    std::cout << "Local endpoint: " << socket_->getLocalPort() << std::endl;
-    std::cout << "Starting communication...\n" << std::endl;
+    else if (status == sf::Socket::Status::Error)
+    {
+        std::cerr << "Socket error occurred" << "\n";
+    }
+    else if (status == sf::Socket::Status::Disconnected)
+    {
+        std::cerr << "Connection was disconnected" << "\n";
+    }
 }
 
 void Client::promptMessage()
 {
+    // Prompt a user inputted message
     std::string msg;
     std::cout << "Please enter a message: ";
     std::getline(std::cin, msg);
@@ -42,20 +44,10 @@ void Client::promptMessage()
 
 void Client::sendMessage(const std::string &message)
 {
-
-    // Create and populate the custom data structure
-
+    // Generate a packet and append the message
     sf::Packet packet;
     packet << message;
 
-    // Send the data structure
+    // Send the packet
     sf::Socket::Status sendStatus = socket_->send(packet);
-
-    if (sendStatus != sf::Socket::Status::Done)
-    {
-        if (sendStatus == sf::Socket::Status::Disconnected)
-        {
-            std::cout << "Server disconnected" << std::endl;
-        }
-    }
 }
