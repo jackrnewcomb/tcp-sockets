@@ -25,8 +25,9 @@ class Client
 
     /**
      * @brief Prompts the user for a string input message to the console
+     * @return A true or false on whether to continue prompting (based on whether the user opted to disconnect)
      */
-    void promptMessage();
+    bool promptMessage();
 
     /**
      * @brief Sends the user-inputted message to the server

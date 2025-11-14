@@ -33,13 +33,21 @@ Client::Client(const int port, const std::string &address)
     }
 }
 
-void Client::promptMessage()
+bool Client::promptMessage()
 {
     // Prompt a user inputted message
     std::string msg;
-    std::cout << "Please enter a message: ";
+    std::cout << "Please enter a message (or input q to disconnect): ";
     std::getline(std::cin, msg);
-    sendMessage(msg);
+    if (msg == "q")
+    {
+        return false;
+    }
+    else
+    {
+        sendMessage(msg);
+        return true;
+    }
 }
 
 void Client::sendMessage(const std::string &message)

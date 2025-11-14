@@ -73,10 +73,12 @@ int main(int argc, char *argv[])
     int port = std::stoi(userPort);
     Client client(port, ipAddress);
 
-    // Infinite loop to prompt user input
-    while (true)
+    // Loop to prompt user input
+    bool continuePrompting = true;
+    while (continuePrompting)
     {
-        client.promptMessage();
+        continuePrompting = client.promptMessage();
     }
+    std::cout << "Disconnection requested, terminating.\n";
     return 0;
 }
