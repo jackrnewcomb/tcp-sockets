@@ -24,6 +24,12 @@ void Server::listen()
 
     std::cout << "Listening on port: " << port_ << std::endl;
 
+    if (listener_->listen(port_) != sf::Socket::Done)
+    {
+        std::cerr << "Failed to bind to port " << port_ << "\n";
+        return;
+    }
+
     // Create a selector
     sf::SocketSelector selector;
 
@@ -71,6 +77,13 @@ void Server::listen()
                             // Copy the receivedData message to a string, and print that string to the log
                             std::string newMsg;
                             receivedData >> newMsg;
+
+                            std::string nextWord;
+                            while (receivedData >> nextWord)
+                            {
+                                newMsg += " " + nextWord;
+                            }
+
                             writeToLog("New message received from from " + client.getRemoteAddress().toString() + ":" +
                                        std::to_string(client.getRemotePort()) + ": " + newMsg);
 
