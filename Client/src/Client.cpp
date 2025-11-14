@@ -23,13 +23,11 @@ Client::Client(const int port, const std::string &address)
     {
         std::cout << "Connected! Local port: " << socket_->getLocalPort() << "\n";
     }
-    else if (status == sf::Socket::Status::Error)
+    else
     {
-        std::cerr << "Socket error occurred" << "\n";
-    }
-    else if (status == sf::Socket::Status::Disconnected)
-    {
-        std::cerr << "Connection was disconnected" << "\n";
+        std::cout << "Failed to connect to the server at " + address + " on " + std::to_string(port) +
+                         ". Please check your values "
+                         "and press any key to end program!";
     }
 }
 
