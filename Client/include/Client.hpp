@@ -9,6 +9,7 @@ Header for a Client class, with methods for prompting user input messages, and s
 #include "SFML/Network.hpp"
 #include <chrono>
 #include <iostream>
+#include <memory>
 #include <string>
 
 class Client
