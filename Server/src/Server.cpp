@@ -23,6 +23,7 @@ void Server::listen()
 {
 
     std::cout << "Listening on port: " << port_ << std::endl;
+    std::cout << "To terminate server, input ctrl+C\n";
 
     if (listener_->listen(port_) != sf::Socket::Done)
     {
