@@ -25,9 +25,9 @@ Client::Client(const int port, const std::string &address)
     }
     else
     {
-        std::cout << "Failed to connect to the server at " + address + " on " + std::to_string(port) +
-                         ". Please check your values "
-                         "and press any key to end program!";
+        throw std::runtime_error("Failed to connect to the server at " + address + " on " + std::to_string(port) +
+                                 ". Please check your values "
+                                 "and press any key to end program!");
     }
 }
 

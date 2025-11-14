@@ -71,13 +71,22 @@ int main(int argc, char *argv[])
 
     // Construct the client
     int port = std::stoi(userPort);
-    Client client(port, ipAddress);
+    std::shared_ptr<Client> client;
+    try
+    {
+        client = std::make_shared<Client>(port, ipAddress);
+    }
+    catch (const std::runtime_error &e)
+    {
+        std::cout << e.what();
+        return -1;
+    }
 
     // Loop to prompt user input
     bool continuePrompting = true;
     while (continuePrompting)
     {
-        continuePrompting = client.promptMessage();
+        continuePrompting = client->promptMessage();
     }
     std::cout << "Disconnection requested, terminating.\n";
     return 0;

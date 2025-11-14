@@ -10,6 +10,7 @@ Header for a Client class, with methods for prompting user input messages, and s
 #include <chrono>
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 
 class Client
