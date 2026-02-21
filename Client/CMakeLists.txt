@@ -8,12 +8,6 @@ file(GLOB SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 file(GLOB INCLUDES ${PROJECT_SOURCE_DIR}/include/*.hpp)
 add_executable(client ${SOURCES} ${INCLUDES})
 
-find_package(OpenMP REQUIRED)
-if(OpenMP_CXX_FOUND)
-    target_link_libraries(client PUBLIC OpenMP::OpenMP_CXX)
-endif()
-
-
 # Include SFML
 target_include_directories(client PUBLIC
     ${PROJECT_SOURCE_DIR}/include
