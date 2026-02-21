@@ -63,8 +63,11 @@ Start the client in another terminal, and passing the IP Address and port number
 
 Send messages via the client, and examine the server log files following execution.
 
+Note that valid ports range from 61000 - 65535.
+
 --- 
 
 ## Author 
 
 Jack Newcomb
+
