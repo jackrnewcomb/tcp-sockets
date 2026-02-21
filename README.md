@@ -43,3 +43,28 @@ mkdir build
 cd build
 cmake ..
 make
+```
+
+--- 
+
+## Usage 
+
+Start the server by running the server executable, and passing the port number:
+
+```bash
+./server <port>
+```
+
+Start the client in another terminal, and passing the IP Address and port number:
+
+```bash
+./client <server_ip> <port>
+```
+
+Send messages via the client, and examine the server log files following execution.
+
+--- 
+
+## Author 
+
+Jack Newcomb
